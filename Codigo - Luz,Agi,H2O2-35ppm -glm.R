@@ -1,0 +1,20 @@
+library(MVN)
+library(data.table)
+library(rsm)
+library(agricolae)
+library(ResourceSelection)
+
+Data <- fread("C:/Users/ASUS/Desktop/Docs PS/UM/Graph NpsSiO2/GLM/35PPM/Luz-Agitación-H2O2/Data.txt", sep="\t")
+attach(Data)
+names(Data)
+print(head(Data))
+str(Data)
+Modelo <- glm(Y ~ A + B + C + A*B + B*C + A*C + A*B*C, family = gaussian, data = Data)
+summary(Modelo)
+hoslem.test(Modelo$y, Modelo$fitted)
+Modelo
+Residuales<-Modelo$residuals
+par(mar = c(5, 4, 1, 1))
+hist(Residuales, main = "Histograma", xlab = "Residuales", col="blue")
+qqnorm(Residuales, pch=19, col="blue")
+qqline(Residuales, col="red", lwd=2)
